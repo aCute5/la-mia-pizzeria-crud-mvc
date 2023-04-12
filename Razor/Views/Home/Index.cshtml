@@ -1,0 +1,23 @@
+﻿@model PizzaModel[]
+
+@{
+    ViewData["Title"] = "My pizzas";
+    var pizzas = Model;
+}
+
+@if (pizzas.Length is 0)
+{
+    <p>No pizzas to display</p>
+}
+else
+{
+
+    <div class="container">
+        <div class="row row-cols-3">
+            @foreach (var pizza in pizzas)
+            {
+                @await Html.PartialAsync("_Card", pizza)
+            }
+        </div>
+    </div>
+}

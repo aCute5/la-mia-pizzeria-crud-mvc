@@ -1,0 +1,16 @@
+﻿@model PizzaModel[]
+
+@{
+    ViewData["Title"] = "Pizze";
+    var pizze = Model;
+   
+}
+    <div>
+        @foreach (var pizza in pizze)
+        {
+            @await Html.PartialAsync("_Card", pizza)
+        }
+        <a href=@Url.Action("Create", "Pizza" )> Crea una nuova pizza </a>
+    </div>
+
+
