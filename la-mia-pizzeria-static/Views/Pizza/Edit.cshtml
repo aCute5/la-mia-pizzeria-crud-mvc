@@ -1,0 +1,31 @@
+﻿@model PizzaModel
+
+@{
+    var pizza = Model;
+}
+<h2>Edit pizza</h2>
+
+<div class="container">
+	<div class="pad">
+		<form method="post" asp-controller="PizzaController" asp-action="Update" asp-route-id="@pizza.Id" enctype="multipart/form-data">
+			@Html.AntiForgeryToken()
+			<div class="form-field">
+				<label asp-for="Nome" class="form-label">Nome</label>
+				<input asp-for="Nome" class="form-control" />
+				<span asp-validation-for="Nome" class="text error"></span>
+			</div>
+			<div class="form-field">
+				<label asp-for="Descrizione" class="form-label">Descrizione</label>
+				<textarea asp-for="Descrizione" class="form-control"></textarea>
+				<span asp-validation-for="Descrizione" class="text error"></span>
+			</div>
+			
+			<div class="form-field">
+				<label asp-for="Price" class="form-label">Prezzo</label>
+				<input type="text" asp-for="Price" class="form-control">
+				<span asp-validation-for="Price" class="text error"></span>
+			</div>
+			<button class="btn btn-success" type="submit">Save</button>
+		</form>
+	</div>
+</div>

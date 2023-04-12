@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Pizza\Component.razor" />
+    <Content Remove="Views\Pizza\Create - Copia.cshtml" />
+    <Content Remove="Views\Pizza\Detail - Copia.cshtml" />
+    <Content Remove="Views\Pizza\Edit.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Views\Privacy.cshtml.css" />
   </ItemGroup>
 

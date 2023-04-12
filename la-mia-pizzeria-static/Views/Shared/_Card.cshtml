@@ -4,6 +4,8 @@
     <div>
         @Model.Nome
         @Model.Descrizione
-        @Model.Price
-    </div>
+        @Model.Price <span> $</span>
+        <a href=@Url.Action("Detail", "Pizza" , new { Id = Model.Id } )> Visualizza la pizza</a>
+        <a href=@Url.Action("Edit", "Pizza" , new { Id = Model.Id } )> Visualizza la pizza</a>
+       </div>
 </div>
