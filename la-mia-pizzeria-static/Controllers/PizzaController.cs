@@ -26,6 +26,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             return View(pizza);
         }
+        [HttpGet]
         public IActionResult Create ()
         {
             var pizza = new PizzaModel();
@@ -104,6 +105,7 @@ namespace la_mia_pizzeria_static.Controllers
                 if(pizzatoDelete != null)
                 {
                     ctx.Pizze.Remove(pizzatoDelete);
+                    ctx.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
