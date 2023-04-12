@@ -53,20 +53,19 @@ namespace la_mia_pizzeria_static.Controllers
         
         
         }
-        [HttpPost]
-		[ValidateAntiForgeryToken]
+        [HttpGet]
 		public IActionResult Update(int id)
 		{
-			using (var ctx = new PizzaContext())
+			using (PizzaContext ctx = new PizzaContext())  
             {
-              var pizza = ctx.Pizze.FirstOrDefault(x => x.Id == id);
-                if (pizza == null)
+              PizzaModel pizzatoEdit = ctx.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+            if(pizzatoEdit == null)
                 {
-                    return View("Not found");
+                    return NotFound();
                 }
                 else
                 {
-                    return View(pizza); 
+                    return View(pizzatoEdit);
                 }
             }
 			
@@ -86,9 +85,26 @@ namespace la_mia_pizzeria_static.Controllers
                 }
                 else
                 {
-                    return View("Edit",pizzatoEdit);
-                }
+					return RedirectToAction("Index");
+				}
             }
+        }
+        public IActionResult Delete ( int id)
+        {
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                PizzaModel pizzatoDelete = ctx.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+                if(pizzatoDelete != null)
+                {
+                    ctx.Pizze.Remove(pizzatoDelete);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+			}
         }
     }
 

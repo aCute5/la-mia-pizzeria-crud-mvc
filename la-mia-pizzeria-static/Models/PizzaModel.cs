@@ -16,7 +16,7 @@ namespace la_mia_pizzeria_static.Models
         public string? Descrizione { get; set; }
 
         [Required(ErrorMessage = "Il campo è obbligatorio")]
-        [Range(18,80, ErrorMessage = "Il prezzo non può superare gli 80 euro")]
+        
         public int Price { get; set; }
        
 
