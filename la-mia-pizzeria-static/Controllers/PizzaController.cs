@@ -9,7 +9,7 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Index()
         {
             using var ctx = new PizzaContext();
-            var pizzas = ctx.Pizze.ToArray();
+            var pizzas = ctx.Pizzas.ToArray();
 
             return View(pizzas);
 
@@ -17,7 +17,7 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Detail(int id)
         {
             using var ctx = new PizzaContext();
-            var pizza = ctx.Pizze.SingleOrDefault(p => p.Id == id);
+            var pizza = ctx.Pizzas.SingleOrDefault(p => p.Id == id);
 
             if (pizza is null)
             {
@@ -29,24 +29,36 @@ namespace la_mia_pizzeria_static.Controllers
         [HttpGet]
         public IActionResult Create ()
         {
-            var pizza = new PizzaModel();
-            return View(pizza);
+            using (PizzaContext ctx = new PizzaContext())
+            {
+                List<Category> categorie = ctx.Categorie.ToList();
+                PizzaFormModel model = new PizzaFormModel();
+                model.Pizza = new PizzaModel();
+                model.Categories = categorie;
+
+                return View("Create", model);
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PizzaModel data) { 
+        public IActionResult Create(PizzaFormModel data) { 
             if (!ModelState.IsValid)
             {
-                return View("Create",data);
+                using (PizzaContext ctx = new PizzaContext())
+                {
+                    List<Category> categorie = ctx.Categorie.ToList();
+                    data.Categories = categorie;
+                    return View("Create", data);
+                }
             }
             using (PizzaContext context = new PizzaContext())
             {
                 PizzaModel pizzatoCreate = new PizzaModel();
-                pizzatoCreate.Nome = data.Nome;
-                pizzatoCreate.Descrizione = data.Descrizione;
-                pizzatoCreate.Price = data.Price;
+                pizzatoCreate.Nome = data.Pizza.Nome;
+                pizzatoCreate.Descrizione = data.Pizza.Descrizione;
+                pizzatoCreate.Price = data.Pizza.Price;
 
-                context.Pizze.Add(pizzatoCreate);
+                context.Pizzas.Add(pizzatoCreate);
                 context.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -59,7 +71,7 @@ namespace la_mia_pizzeria_static.Controllers
 		{
 			using (PizzaContext ctx = new PizzaContext())  
             {
-              PizzaModel pizzatoEdit = ctx.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+              PizzaModel pizzatoEdit = ctx.Pizzas.Where(pizza => pizza.Id == id).FirstOrDefault();
             if(pizzatoEdit == null)
                 {
                     return NotFound();
@@ -82,7 +94,7 @@ namespace la_mia_pizzeria_static.Controllers
             }
             using (PizzaContext context = new PizzaContext())
             {
-                PizzaModel pizzatoEdit = context.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+                PizzaModel pizzatoEdit = context.Pizzas.Where(pizza => pizza.Id == id).FirstOrDefault();
                 if (pizzatoEdit != null)
                 {
                     pizzatoEdit.Nome = data.Nome;
@@ -101,10 +113,10 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzaContext ctx = new PizzaContext())
             {
-                PizzaModel pizzatoDelete = ctx.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+                PizzaModel pizzatoDelete = ctx.Pizzas.Where(pizza => pizza.Id == id).FirstOrDefault();
                 if(pizzatoDelete != null)
                 {
-                    ctx.Pizze.Remove(pizzatoDelete);
+                    ctx.Pizzas.Remove(pizzatoDelete);
                     ctx.SaveChanges();
                     return RedirectToAction("Index");
                 }
